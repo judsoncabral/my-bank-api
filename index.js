@@ -13,13 +13,13 @@ const myFormat = printf(({ level, message, label, timestamp }) => {
   return `${timestamp} [${label}] ${level}: ${message}`;
 });
 
-const logger = winston.createLogger({
+global.logger = winston.createLogger({
   level: "silly",
   transports: [
     new winston.transports.Console(),
     new winston.transports.File({ filename: "my-log.log" }),
   ],
-  format: combine(label({ label: "my-app" }), timestamp(), myFormat),
+  format: combine(label({ label: "my-bank-api" }), timestamp(), myFormat),
 });
 
 app.use("/account", accountsRouter);
