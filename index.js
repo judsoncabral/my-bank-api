@@ -6,6 +6,7 @@ import { promises as fs } from "fs";
 const { readFile, writeFile } = fs;
 const app = express();
 app.use(express.json());
+global.fileName = "account.json";
 
 const { combine, printf, label, timestamp } = winston.format;
 const myFormat = printf(({ level, message, label, timestamp }) => {
