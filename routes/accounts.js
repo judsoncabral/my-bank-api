@@ -7,9 +7,16 @@ const router = express.Router();
 router.post("/", async (req, res, next) => {
   try {
     let account = req.body;
+    if (account.balance == null || !account.name) {
+      throw new Error("Name and Balance are required");
+    }
     const data = JSON.parse(await readFile(global.fileName));
     console.log(data);
-    account = { id: data.nextId++, ...account };
+    account = {
+      id: data.nextId++,
+      name: account.name,
+      balance: account.balance,
+    };
     data.accounts.push(account);
     await writeFile(global.fileName, JSON.stringify(data, null, 2));
     res.send(account);
@@ -63,11 +70,18 @@ router.delete("/:id", async (req, res, next) => {
 router.put("/", async (req, res, next) => {
   try {
     let account = req.body;
+    if (!account.id || account.balance == null || !account.name) {
+      throw new Error("Id, Name and Balance are required");
+    }
     const data = JSON.parse(await readFile(global.fileName));
     const index = data.accounts.findIndex(
       (accountToFind) => accountToFind.id === parseInt(account.id)
     );
-    data.accounts[index] = account;
+    if( index === -1 ) {
+      throw new Error("Account does not exist");
+    }
+    data.accounts[index].name = account.name;
+    data.accounts[index].balance = account.balance;
     await writeFile(global.fileName, JSON.stringify(data, null, 2));
     res.send(account);
   } catch (err) {
@@ -80,12 +94,16 @@ router.put("/", async (req, res, next) => {
 router.patch("/updateBalance", async (req, res, next) => {
   try {
     let account = req.body;
-
+    if (account.balance == null || !account.id) {
+      throw new Error("Id and Balance are required");
+    }
     const data = JSON.parse(await readFile(global.fileName));
     const index = data.accounts.findIndex(
       (accountToFind) => accountToFind.id === parseInt(account.id)
     );
-
+    if (index === -1) {
+      throw new Error("Account does not exist");
+    }
     data.accounts[index].balance = account.balance;
     await writeFile(global.fileName, JSON.stringify(data, null, 2));
     res.send(data.accounts[index]);

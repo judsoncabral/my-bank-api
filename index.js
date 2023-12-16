@@ -2,10 +2,11 @@ import express from "express";
 import winston from "winston";
 import accountsRouter from "./routes/accounts.js";
 import { promises as fs } from "fs";
-
+import { cors} from "cors";
 const { readFile, writeFile } = fs;
 const app = express();
 app.use(express.json());
+app.use(cors());
 global.fileName = "account.json";
 
 const { combine, printf, label, timestamp } = winston.format;
