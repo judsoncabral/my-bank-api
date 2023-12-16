@@ -1,13 +1,18 @@
 {
-  "nextId": 3,
+  "nextId": 6,
   "accounts": [
     {
       "id": 1,
-      "name": "Judson Teste",
+      "name": "Teste put",
       "balance": 200
     },
     {
       "id": 2,
+      "name": "Judson Teste",
+      "balance": 5300
+    },
+    {
+      "id": 3,
       "name": "Judson Teste",
       "balance": 0
     }

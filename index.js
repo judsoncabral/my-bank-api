@@ -1,8 +1,9 @@
 import express from "express";
 import winston from "winston";
-import accountsRouter from "./routes/accounts.js";
+import accountsRouter from "./routes/account.route.js";
 import { promises as fs } from "fs";
-import { cors} from "cors";
+import cors from "cors";
+
 const { readFile, writeFile } = fs;
 const app = express();
 app.use(express.json());
@@ -34,8 +35,12 @@ app.listen(3000, async () => {
       nextId: 1,
       accounts: [],
     };
-    writeFile("account.json", JSON.stringify(initialJson)).then(() => {
-      logger.info("Api started and file created!");
-    }).catch(err => {logger.error(err)});
+    writeFile("account.json", JSON.stringify(initialJson))
+      .then(() => {
+        logger.info("Api started and file created!");
+      })
+      .catch((err) => {
+        logger.error(err);
+      });
   }
 });
